@@ -1,0 +1,43 @@
+version: "3.7"
+
+networks:
+  pet-network:
+    driver: bridge
+
+services:
+  pet-go:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pet-postgres
+      - pet-redis
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./.:/app"
+    networks:
+      - pet-network
+
+  pet-postgres:
+    restart: always
+    image: postgres:13-alpine
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - pet-network
+    volumes:
+      - "./.data/database/postgres/data:/var/lib/postgresql/data"
+
+  pet-redis:
+    restart: always
+    image: redis:alpine
+    volumes:
+      - ./.data/storage/redis/redis-data:/var/lib/redis
+    networks:
+      - pet-network

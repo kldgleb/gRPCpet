@@ -1,0 +1,18 @@
+syntax = "proto3";
+option go_package = "./api";
+
+package api;
+
+service User {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+}
+
+message CreateRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message CreateResponse {
+  uint64 id = 1;
+}
