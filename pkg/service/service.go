@@ -12,7 +12,7 @@ type Service struct {
 type User interface {
 	Create(user *entity.User) (uint64, error)
 	GetAll() ([]entity.User, error)
-	Delete(userId int) error
+	Delete(userId uint64) error
 }
 
 func NewService(repo *repository.Repository) *Service {

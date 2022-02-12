@@ -3,14 +3,11 @@ package repository
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 )
 
 const (
-	usersTable      = "users"
-	todoListsTable  = "todo_lists"
-	todoItemsTable  = "todo_items"
-	usersListsTable = "users_lists"
-	listsItems      = "lists_items"
+	usersTable = "users"
 )
 
 type Config struct {

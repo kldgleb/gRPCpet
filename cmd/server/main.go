@@ -5,6 +5,7 @@ import (
 	"gRPCpet/pkg/repository"
 	"gRPCpet/pkg/service"
 	"gRPCpet/pkg/user"
+	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"log"
@@ -15,6 +16,10 @@ import (
 func main() {
 	if err := initConfig(); err != nil {
 		log.Fatalf("error while reading config, %s", err.Error())
+	}
+
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
@@ -33,8 +38,7 @@ func main() {
 		Service: services,
 	}
 	api.RegisterUserServer(s, userServer)
-
-	l, err := net.Listen("tcp", os.Getenv("APP_PORT"))
+	l, err := net.Listen("tcp", os.Getenv("APP_HOST")+":"+os.Getenv("APP_PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}

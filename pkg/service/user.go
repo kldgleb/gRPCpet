@@ -21,6 +21,6 @@ func (s *UserService) GetAll() ([]entity.User, error) {
 	return s.repo.User.GetAll()
 }
 
-func (s *UserService) Delete(userId int) error {
+func (s *UserService) Delete(userId uint64) error {
 	return s.repo.User.Delete(userId)
 }
