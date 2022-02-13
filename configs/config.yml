@@ -1,3 +1,5 @@
 db:
-  host: "localhost"
   sslMode: "disable"
+rdb:
+  password: ""
+  db: 0

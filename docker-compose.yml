@@ -7,6 +7,7 @@ networks:
 services:
   pet-go:
     restart: always
+    container_name: pet-go
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,6 +23,7 @@ services:
 
   pet-postgres:
     restart: always
+    container_name: pet-postgres
     image: postgres:13-alpine
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
@@ -36,7 +38,10 @@ services:
 
   pet-redis:
     restart: always
+    container_name: pet-redis
     image: redis:alpine
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
     volumes:
       - ./.data/storage/redis/redis-data:/var/lib/redis
     networks:

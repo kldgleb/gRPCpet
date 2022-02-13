@@ -18,7 +18,16 @@ func (s *UserService) Create(user *entity.User) (uint64, error) {
 }
 
 func (s *UserService) GetAll() ([]entity.User, error) {
-	return s.repo.User.GetAll()
+
+	hasCache := s.repo.User.HasCachedUsers()
+	if hasCache {
+		users, err := s.repo.User.GetCachedUsers()
+		return users, err
+	}
+
+	users, err := s.repo.User.GetAll()
+	s.repo.User.CacheUsers(users)
+	return users, err
 }
 
 func (s *UserService) Delete(userId uint64) error {

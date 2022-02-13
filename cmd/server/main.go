@@ -23,14 +23,28 @@ func main() {
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     viper.GetString("db.host"),
+		Host:     os.Getenv("POSTGRES_HOST"),
 		Port:     os.Getenv("POSTGRES_PORT"),
 		Username: os.Getenv("POSTGRES_USER"),
 		Password: os.Getenv("POSTGRES_PASSWORD"),
 		DBName:   os.Getenv("POSTGRES_DB"),
 		SSLMode:  viper.GetString("db.sslMode"),
 	})
-	repos := repository.NewRepository(db)
+	if err != nil {
+		log.Fatal("Connect to db err: ", err)
+	}
+
+	rdb, err := repository.NewRedisClient(repository.RedisConfig{
+		Host:     os.Getenv("REDIS_HOST"),
+		Port:     os.Getenv("REDIS_PORT"),
+		Password: viper.GetString("rdb.password"),
+		DB:       viper.GetInt("rdb.db"),
+	})
+	if err != nil {
+		log.Fatal("Connect to rdb err: ", err)
+	}
+
+	repos := repository.NewRepository(db, rdb)
 	services := service.NewService(repos)
 
 	s := grpc.NewServer()
