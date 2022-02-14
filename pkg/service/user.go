@@ -1,8 +1,14 @@
 package service
 
 import (
+	"crypto/sha1"
+	"fmt"
 	"gRPCpet/pkg/entity"
 	"gRPCpet/pkg/repository"
+)
+
+const (
+	salt = "alskdoaskdpal"
 )
 
 type UserService struct {
@@ -14,6 +20,7 @@ func NewUserService(repo *repository.Repository) *UserService {
 }
 
 func (s *UserService) Create(user *entity.User) (uint64, error) {
+	user.Password = s.generatePasswordHash(user.Password)
 	userId, err := s.repo.User.Create(user)
 	if err == nil {
 		s.repo.User.FlushCachedUsers()
@@ -36,4 +43,10 @@ func (s *UserService) GetAll() ([]entity.User, error) {
 
 func (s *UserService) Delete(userId uint64) error {
 	return s.repo.User.Delete(userId)
+}
+
+func (s *UserService) generatePasswordHash(password string) string {
+	hash := sha1.New()
+	hash.Write([]byte(password))
+	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
 }
