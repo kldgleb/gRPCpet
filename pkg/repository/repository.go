@@ -17,6 +17,7 @@ type User interface {
 	CacheUsers([]entity.User)
 	GetCachedUsers() ([]entity.User, error)
 	HasCachedUsers() bool
+	FlushCachedUsers()
 }
 
 func NewRepository(db *sql.DB, rdb *redis.Client) *Repository {

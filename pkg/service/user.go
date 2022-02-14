@@ -14,7 +14,11 @@ func NewUserService(repo *repository.Repository) *UserService {
 }
 
 func (s *UserService) Create(user *entity.User) (uint64, error) {
-	return s.repo.User.Create(user)
+	userId, err := s.repo.User.Create(user)
+	if err == nil {
+		s.repo.User.FlushCachedUsers()
+	}
+	return userId, err
 }
 
 func (s *UserService) GetAll() ([]entity.User, error) {
