@@ -1,16 +1,16 @@
 package main
 
 import (
-	"gRPCpet/pkg/api"
 	"gRPCpet/pkg/repository"
 	"gRPCpet/pkg/service"
-	"gRPCpet/pkg/user"
+	"gRPCpet/transport/grpc"
+	"gRPCpet/transport/grpc/handler"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-	"google.golang.org/grpc"
 	"log"
-	"net"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -47,19 +47,26 @@ func main() {
 	repos := repository.NewRepository(db, rdb)
 	services := service.NewService(repos)
 
-	s := grpc.NewServer()
-	userServer := &user.GRPCServer{
-		Service: services,
+	deps := grpc.Dependencies{
+		UserHandler: handler.NewUserHandler(services.User),
 	}
-	api.RegisterUserServer(s, userServer)
-	l, err := net.Listen("tcp", os.Getenv("APP_HOST")+":"+os.Getenv("APP_PORT"))
-	if err != nil {
-		log.Fatal(err)
+	grpcServer := grpc.NewServer(deps)
+	grpcConfig := grpc.ServerConfig{
+		Host: os.Getenv("APP_HOST"),
+		Port: os.Getenv("APP_PORT"),
 	}
-	if err = s.Serve(l); err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		if err = grpcServer.ListenAndServe(grpcConfig); err != nil {
+			log.Println("grpc ListenAndServe error", err)
+		}
+	}()
 
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+
+	<-quit
+
+	log.Println("Shutdown serv...")
 }
 
 func initConfig() error {

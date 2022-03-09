@@ -1,18 +1,12 @@
 package service
 
 import (
-	"gRPCpet/pkg/entity"
 	"gRPCpet/pkg/repository"
+	"gRPCpet/transport/grpc/handler"
 )
 
 type Service struct {
-	User User
-}
-
-type User interface {
-	Create(user *entity.User) (uint64, error)
-	GetAll() ([]entity.User, error)
-	Delete(userId uint64) error
+	User handler.UserService
 }
 
 func NewService(repo *repository.Repository) *Service {
