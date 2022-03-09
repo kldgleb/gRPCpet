@@ -2,7 +2,7 @@ package repository
 
 import (
 	"database/sql"
-	"gRPCpet/pkg/entity"
+	"gRPCpet/internal/entity"
 	"github.com/go-redis/redis/v8"
 )
 

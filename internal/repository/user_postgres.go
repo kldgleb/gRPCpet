@@ -3,7 +3,7 @@ package repository
 import (
 	"database/sql"
 	"fmt"
-	"gRPCpet/pkg/entity"
+	"gRPCpet/internal/entity"
 	"log"
 )
 

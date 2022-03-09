@@ -1,7 +1,7 @@
 package service
 
 import (
-	"gRPCpet/pkg/repository"
+	"gRPCpet/internal/repository"
 	"gRPCpet/transport/grpc/handler"
 )
 

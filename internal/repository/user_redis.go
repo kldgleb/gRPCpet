@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"gRPCpet/pkg/entity"
+	"gRPCpet/internal/entity"
 	"github.com/go-redis/redis/v8"
 	"strconv"
 	"time"

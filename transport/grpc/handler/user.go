@@ -2,8 +2,8 @@ package handler
 
 import (
 	"context"
+	"gRPCpet/internal/entity"
 	"gRPCpet/pkg/api"
-	"gRPCpet/pkg/entity"
 )
 
 type UserHandler struct {

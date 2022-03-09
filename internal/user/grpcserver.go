@@ -2,9 +2,9 @@ package user
 
 import (
 	"context"
-	"gRPCpet/pkg/api"
-	"gRPCpet/pkg/entity"
-	"gRPCpet/pkg/service"
+	"gRPCpet/internal/api"
+	"gRPCpet/internal/entity"
+	"gRPCpet/internal/service"
 )
 
 type GRPCServer struct {

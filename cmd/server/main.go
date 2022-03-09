@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gRPCpet/pkg/repository"
-	"gRPCpet/pkg/service"
+	"gRPCpet/internal/repository"
+	"gRPCpet/internal/service"
 	"gRPCpet/transport/grpc"
 	"gRPCpet/transport/grpc/handler"
 	"github.com/joho/godotenv"

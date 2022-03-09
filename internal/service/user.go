@@ -3,8 +3,8 @@ package service
 import (
 	"crypto/sha1"
 	"fmt"
-	"gRPCpet/pkg/entity"
-	"gRPCpet/pkg/repository"
+	"gRPCpet/internal/entity"
+	"gRPCpet/internal/repository"
 )
 
 const (
